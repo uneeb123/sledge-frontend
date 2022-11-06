@@ -1,7 +1,68 @@
 .App {
   margin:20px;
+  margin-right: 200px;
+  margin-left:50px;
+}
+
+.info {
+  white-space: pre-line;
+  font-size: 14pt;
+  font-family:'Courier New', Courier, monospace;
+  margin-bottom: 20px;
+}
+
+.infoHeader {
+  font-weight: bold;
+  font-size: 24pt;
 }
 
 .nav {
   margin-bottom: 20px;
+}
+
+.amountFormLabel {
+  font-size: 12pt;
+  margin-right: 10px;
+}
+
+.amountForm {
+  display: flex;
+  flex-direction: horizontal;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.amountForm > input {
+  margin-left: 10px;
+}
+
+.amountForm > button {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.dummyCard {
+  width: 600px;
+  height: 300px;
+  border: dotted 1px grey;
+}
+
+.dummyCardText {
+  padding: 30px;
+  font-size: 14pt;
+  font-family: 'Times New Roman', Times, serif;
+  color: grey
+}
+
+.transactionForm {
+  margin-bottom: 20px;
+}
+
+.transactionForm > * {
+  margin-right: 10px;
+}
+
+.finalNote {
+  background-color: lightyellow;
+  padding: 10px;
 }
