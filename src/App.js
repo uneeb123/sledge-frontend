@@ -20,7 +20,9 @@ import { useDebounce } from "use-debounce";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
-const BASE_URL = "https://sledge-olive.vercel.app";
+// const BASE_URL = "https://sledge-olive.vercel.app";
+// const BASE_URL = "http://localhost:5050";
+const BASE_URL = "https://sledge-1kr36xm6s-uneeb123.vercel.app/";
 
 // const GET_ALL_URL = BASE_URL + "/api/all";
 const CREATE_CARD_URL = BASE_URL + "/api/create";
