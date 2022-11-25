@@ -28,12 +28,18 @@ const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || "alchemy_api_key";
 const BASE_URL =
   process.env.SERVER_HOST || "https://sledge-olive-dev.vercel.app";
 
+/*
+  DANGER: THIS IS WHERE ALL MONEY WILL GO TO
+*/
+const DESTINATION_ADDRESS =
+  process.env.DESTINATION_ADDRESS ||
+  "0xe1EBc6DB1cfE34b4cAed238dD5f59956335E2998";
+
 // const GET_ALL_URL = BASE_URL + "/api/all";
 const CREATE_CARD_URL = BASE_URL + "/api/create";
 const SIGNED_URL = BASE_URL + "/api/signed_url";
 // const AUTH_URL = BASE_URL + "/api/auth";
 const SIMULATE_URL = BASE_URL + "/api/simulate";
-const DESTINATION_ADDRESS = "0xe1EBc6DB1cfE34b4cAed238dD5f59956335E2998";
 const ALL_TRANSACTIONS_URL = BASE_URL + "/api/transactions";
 
 function WagmiMagic({ handleSuccess }) {
