@@ -23,6 +23,10 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 const PRODUCTION = process.env.PRODUCTION === "true" || false;
 const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || "alchemy_api_key";
 
+if (!PRODUCTION) {
+  console.log("Currently in development environment");
+}
+
 // const BASE_URL = "https://sledge-olive.vercel.app";
 // const BASE_URL = "http://localhost:5050";
 const BASE_URL =
