@@ -20,21 +20,27 @@ import { useDebounce } from "use-debounce";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
+const PRODUCTION = process.env.PRODUCTION === "true" || false;
+const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || "alchemy_api_key";
+
 // const BASE_URL = "https://sledge-olive.vercel.app";
 // const BASE_URL = "http://localhost:5050";
-const BASE_URL = "https://sledge-olive-dev.vercel.app";
+const BASE_URL =
+  process.env.SERVER_HOST || "https://sledge-olive-dev.vercel.app";
+
+/*
+  DANGER: THIS IS WHERE ALL MONEY WILL GO TO
+*/
+const DESTINATION_ADDRESS =
+  process.env.DESTINATION_ADDRESS ||
+  "0xe1EBc6DB1cfE34b4cAed238dD5f59956335E2998";
 
 // const GET_ALL_URL = BASE_URL + "/api/all";
 const CREATE_CARD_URL = BASE_URL + "/api/create";
 const SIGNED_URL = BASE_URL + "/api/signed_url";
 // const AUTH_URL = BASE_URL + "/api/auth";
 const SIMULATE_URL = BASE_URL + "/api/simulate";
-const DESTINATION_ADDRESS = "0xe1EBc6DB1cfE34b4cAed238dD5f59956335E2998";
 const ALL_TRANSACTIONS_URL = BASE_URL + "/api/transactions";
-
-function sayHello() {
-  alert("You clicked me!");
-}
 
 function WagmiMagic({ handleSuccess }) {
   const [amount, setAmount] = useState("0.001");
@@ -66,6 +72,10 @@ function WagmiMagic({ handleSuccess }) {
     sendTransaction?.();
   }
 
+  let etherscan_link = PRODUCTION
+    ? `https://etherscan.io/tx/${data?.hash}`
+    : `https://goerli.etherscan.io/tx/${data?.hash}`;
+
   return (
     <form className="amountForm" onSubmit={handleSubmit}>
       <div className="amountFormLabel">Amount</div>
@@ -76,9 +86,7 @@ function WagmiMagic({ handleSuccess }) {
       </button>
       {isSuccess && (
         <div>
-          <a href={`https://goerli.etherscan.io/tx/${data?.hash}`}>
-            Etherscan link
-          </a>
+          <a href={etherscan_link}>Etherscan link</a>
         </div>
       )}
     </form>
@@ -86,10 +94,18 @@ function WagmiMagic({ handleSuccess }) {
 }
 
 function App() {
-  const { chains, provider } = configureChains(
-    [chain.goerli],
-    [alchemyProvider({ apiKey: "SrDO2MifdoOqynE5FKmWWy_oxNWFR0Jo" })]
-  );
+  let chains, provider;
+  if (PRODUCTION) {
+    ({ chains, provider } = configureChains(
+      [chain.mainnet],
+      [alchemyProvider({ apiKey: ALCHEMY_API_KEY })]
+    ));
+  } else {
+    ({ chains, provider } = configureChains(
+      [chain.goerli],
+      [alchemyProvider({ apiKey: ALCHEMY_API_KEY })]
+    ));
+  }
 
   const { connectors } = getDefaultWallets({
     appName: "My RainbowKit App",
@@ -103,7 +119,7 @@ function App() {
   });
 
   const infoHeaderText = "Instant Liquidity on ETH balance";
-  const infoText1 = `Step 1. Select the amount of ETH (Goerli Testnet) that you'd like to convert`;
+  const infoText1 = `Step 1. Select the amount of ETH that you'd like to convert`;
   const infoText2 = `Step 2. Card will be issued once successful`;
   const infoText3 = `Step 3. Spend (simulated for demo purposes)`;
 
@@ -218,6 +234,20 @@ function App() {
     </li>
   ));
 
+  const transaction_form = (
+    <div>
+      <div className="info">{infoText3}</div>
+      <form className="transactionForm" onSubmit={handleTxSubmit}>
+        <span className="transactionFormLabel">Amount (dollar)</span>
+        <input type="text" value={txAmount} onChange={handleTxAmountChange} />
+        <span className="transactionFormLabel">Description</span>
+        <input type="text" value={txStore} onChange={handleTxStoreChange} />
+        <button>{"Submit"}</button>
+      </form>
+      <ul>{txList}</ul>
+    </div>
+  );
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
@@ -233,19 +263,7 @@ function App() {
           <div className="info">{infoText2}</div>
           <div className="body">{card}</div>
           <hr />
-          <div className="info">{infoText3}</div>
-          <form className="transactionForm" onSubmit={handleTxSubmit}>
-            <span className="transactionFormLabel">Amount (dollar)</span>
-            <input
-              type="text"
-              value={txAmount}
-              onChange={handleTxAmountChange}
-            />
-            <span className="transactionFormLabel">Description</span>
-            <input type="text" value={txStore} onChange={handleTxStoreChange} />
-            <button>{"Submit"}</button>
-          </form>
-          <ul>{txList}</ul>
+          {!PRODUCTION && transaction_form}
           <hr />
           <div className="info">How it works</div>
           <div class="finalNote">
