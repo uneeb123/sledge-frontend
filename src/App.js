@@ -20,24 +20,26 @@ import { useDebounce } from "use-debounce";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
-const PRODUCTION = process.env.PRODUCTION === "true" || false;
-const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || "alchemy_api_key";
+const {
+  REACT_APP_PRODUCTION,
+  REACT_APP_ALCHEMY_API_KEY,
+  REACT_APP_SERVER_HOST,
+  REACT_APP_DESTINATION_ADDRESS,
+} = process.env;
+
+const PRODUCTION = REACT_APP_PRODUCTION == "true" || false;
+const ALCHEMY_API_KEY = REACT_APP_ALCHEMY_API_KEY || "alchemy_api_key";
+// const BASE_URL = "https://sledge-olive.vercel.app";
+// const BASE_URL = "http://localhost:5050";
+const BASE_URL = REACT_APP_SERVER_HOST || "https://sledge-olive-dev.vercel.app";
+/*
+  DANGER: THIS IS WHERE ALL MONEY WILL GO TO
+*/
+const DESTINATION_ADDRESS = REACT_APP_DESTINATION_ADDRESS || "no_address";
 
 if (!PRODUCTION) {
   console.log("Currently in development environment");
 }
-
-// const BASE_URL = "https://sledge-olive.vercel.app";
-// const BASE_URL = "http://localhost:5050";
-const BASE_URL =
-  process.env.SERVER_HOST || "https://sledge-olive-dev.vercel.app";
-
-/*
-  DANGER: THIS IS WHERE ALL MONEY WILL GO TO
-*/
-const DESTINATION_ADDRESS =
-  process.env.DESTINATION_ADDRESS ||
-  "0xe1EBc6DB1cfE34b4cAed238dD5f59956335E2998";
 
 // const GET_ALL_URL = BASE_URL + "/api/all";
 const CREATE_CARD_URL = BASE_URL + "/api/create";
