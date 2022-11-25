@@ -22,7 +22,8 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 // const BASE_URL = "https://sledge-olive.vercel.app";
 // const BASE_URL = "http://localhost:5050";
-const BASE_URL = "https://sledge-olive-dev.vercel.app";
+const BASE_URL =
+  process.env.SERVER_HOST || "https://sledge-olive-dev.vercel.app";
 
 // const GET_ALL_URL = BASE_URL + "/api/all";
 const CREATE_CARD_URL = BASE_URL + "/api/create";
